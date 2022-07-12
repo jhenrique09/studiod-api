@@ -1,8 +1,9 @@
 import { DataSource } from 'typeorm';
+import { appConstants } from '../app.constants';
 
 export const databaseProviders = [
   {
-    provide: 'DATA_SOURCE',
+    provide: appConstants.data_source_pg,
     useFactory: async () => {
       const dataSource = new DataSource({
         type: 'postgres',
@@ -12,10 +13,12 @@ export const databaseProviders = [
         password: process.env.DATABASE_PASSWORD,
         database: process.env.DATABASE_NAME,
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-        synchronize: parseInt(process.env.DEV) == 1,
+        synchronize: false,
       });
 
       return dataSource.initialize();
     },
   },
 ];
+
+export default databaseProviders;
