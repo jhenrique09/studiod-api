@@ -1,10 +1,10 @@
 import { IsNotEmpty, MinLength } from 'class-validator';
 
-export class UpdatePasswordDto {
+export class AtualizarSenhaDto {
   @IsNotEmpty()
-  password: string;
+  senhaAtual: string;
 
   @IsNotEmpty()
   @MinLength(6)
-  newPassword: string;
+  novaSenha: string;
 }

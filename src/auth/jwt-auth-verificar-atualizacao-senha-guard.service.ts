@@ -4,11 +4,11 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { UsersService } from '../users/users.service';
+import { UsuariosService } from '../usuarios/usuarios.service';
 
 @Injectable()
-export class JwtAuthCheckUpdatePasswordGuard extends AuthGuard('jwt') {
-  constructor(private readonly usersService: UsersService) {
+export class JwtAuthVerificarAtualizacaoSenhaGuard extends AuthGuard('jwt') {
+  constructor(private readonly usersService: UsuariosService) {
     super();
   }
 
@@ -22,7 +22,11 @@ export class JwtAuthCheckUpdatePasswordGuard extends AuthGuard('jwt') {
     if (err || !user) {
       throw err || new UnauthorizedException();
     }
-    await this.usersService.validateUser(user.email, user.updated_date, true);
+    await this.usersService.validarUsuario(
+      user.email,
+      user.data_atualizacao,
+      true,
+    );
     return user;
   }
 }

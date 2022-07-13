@@ -1,40 +1,40 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
+import { UsuariosService } from '../usuarios/usuarios.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '../users/entities/user.entity';
+import { Usuario } from '../usuarios/entities/usuario.entity';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject(forwardRef(() => UsersService))
-    private usersService: UsersService,
+    @Inject(forwardRef(() => UsuariosService))
+    private usersService: UsuariosService,
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, password: string): Promise<any> {
-    const user: User = await this.usersService.findByEmail(email, true);
-    if (user && (await bcrypt.compare(password, user.password))) {
-      await this.usersService.updateForceUpdatePassword(user, false);
-      const { password, one_time_password, ...result } = user;
+  async validarUsuario(email: string, senha: string): Promise<any> {
+    const usuario: Usuario = await this.usersService.obterPorEmail(email, true);
+    if (usuario && (await bcrypt.compare(senha, usuario.senha))) {
+      await this.usersService.atualizarRequerAtualizacao(usuario, false);
+      const { senha, senha_uso_unico, ...result } = usuario;
       return result;
     } else if (
-      user &&
-      user.one_time_password &&
-      (await bcrypt.compare(password, user.one_time_password))
+      usuario &&
+      usuario.senha_uso_unico &&
+      (await bcrypt.compare(senha, usuario.senha_uso_unico))
     ) {
-      await this.usersService.updateForceUpdatePassword(user, true);
-      const { password, one_time_password, ...result } = user;
+      await this.usersService.atualizarRequerAtualizacao(usuario, true);
+      const { senha, senha_uso_unico, ...result } = usuario;
       return result;
     }
     return null;
   }
 
-  login(user: User) {
+  login(usuario: Usuario) {
     const payload = {
-      email: user.email,
-      id: user.id,
-      updated_date: user.updated_date,
+      email: usuario.email,
+      id: usuario.id,
+      data_atualizacao: usuario.data_atualizacao,
     };
     return {
       access_token: this.jwtService.sign(payload),
