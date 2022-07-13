@@ -39,8 +39,8 @@ export class UsuariosService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
-    await this.salvar(registrarUsuarioDto);
-    return { status: 1 };
+    const usuario: Usuario = await this.salvar(registrarUsuarioDto);
+    return { ...usuario, ...this.authService.login(usuario) };
   }
 
   async obterPorEmail(email: string, retornarSenha: boolean): Promise<Usuario> {
@@ -177,6 +177,6 @@ export class UsuariosService {
       },
     };
     await this.mailerService.sendMail(mail);
-    return { status: 1 };
+    return true;
   }
 }

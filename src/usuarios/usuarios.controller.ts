@@ -13,6 +13,7 @@ import { AuthService } from '../auth/auth.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AtualizarSenhaDto } from './dto/atualizar-senha.dto';
 import { RecuperarSenhaDto } from './dto/recuperar-senha.dto';
+import { Usuario } from './entities/usuario.entity';
 
 @Controller('usuarios')
 export class UsuariosController {
@@ -23,19 +24,32 @@ export class UsuariosController {
 
   @Post('registrar')
   async registrar(@Body() registrarUsuarioDto: RegistrarUsuarioDto) {
-    return await this.usersService.registrar(registrarUsuarioDto);
+    const usuario = await this.usersService.registrar(registrarUsuarioDto);
+    return {
+      statusCode: 200,
+      message: 'Usuário registrado com sucesso.',
+      access_token: usuario.access_token,
+    };
   }
 
   @UseGuards(LocalAuthGuard)
   @Post('autenticar')
   login(@Request() req) {
-    return this.authService.login(req.user);
+    return {
+      statusCode: 200,
+      message: 'Usuário autenticado com sucesso.',
+      ...this.authService.login(req.user),
+    };
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('perfil')
   async getProfile(@Request() req) {
-    return await this.usersService.obterPorEmail(req.user.email, false);
+    return {
+      statusCode: 200,
+      message: 'Dados do perfil obtidos com sucesso.',
+      ...(await this.usersService.obterPorEmail(req.user.email, false)),
+    };
   }
 
   @UseGuards(JwtAuthGuard)
@@ -44,14 +58,22 @@ export class UsuariosController {
     @Body() atualizarSenhaDto: AtualizarSenhaDto,
     @Request() req,
   ) {
-    return await this.usersService.atualizarSenha(
-      req.user.email,
-      atualizarSenhaDto,
-    );
+    return {
+      statusCode: 200,
+      message: 'Senha atualizada com sucesso.',
+      ...(await this.usersService.atualizarSenha(
+        req.user.email,
+        atualizarSenhaDto,
+      )),
+    };
   }
 
   @Post('recuperarSenha')
   async recuperarSenha(@Body() recuperarSenhaDto: RecuperarSenhaDto) {
-    return await this.usersService.recuperarSenha(recuperarSenhaDto);
+    await this.usersService.recuperarSenha(recuperarSenhaDto);
+    return {
+      statusCode: 200,
+      message: 'Senha provisória enviada para o email cadastrado.',
+    };
   }
 }
