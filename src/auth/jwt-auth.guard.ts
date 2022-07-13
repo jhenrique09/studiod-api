@@ -22,7 +22,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     if (err || !user) {
       throw err || new UnauthorizedException();
     }
-    await this.usersService.validateUser(user.email);
+    await this.usersService.validateUser(user.email, user.updated_date);
     return user;
   }
 }

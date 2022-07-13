@@ -11,6 +11,7 @@ import { RegisterUserDto } from './dto/register-user.dto';
 import { LocalAuthGuard } from '../auth/local-auth.guard';
 import { AuthService } from '../auth/auth.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 
 @Controller('users')
 export class UsersController {
@@ -34,5 +35,17 @@ export class UsersController {
   @Get('profile')
   async getProfile(@Request() req) {
     return await this.usersService.findByEmail(req.user.email, false);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('updatePassword')
+  async updatePassword(
+    @Body() updatePasswordDto: UpdatePasswordDto,
+    @Request() req,
+  ) {
+    return await this.usersService.updatePassword(
+      req.user.email,
+      updatePasswordDto,
+    );
   }
 }
