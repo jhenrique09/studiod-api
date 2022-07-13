@@ -7,7 +7,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { UsersService } from '../users/users.service';
 
 @Injectable()
-export class JwtAuthGuard extends AuthGuard('jwt') {
+export class JwtAuthCheckUpdatePasswordGuard extends AuthGuard('jwt') {
   constructor(private readonly usersService: UsersService) {
     super();
   }
@@ -22,7 +22,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     if (err || !user) {
       throw err || new UnauthorizedException();
     }
-    await this.usersService.validateUser(user.email, user.updated_date, false);
+    await this.usersService.validateUser(user.email, user.updated_date, true);
     return user;
   }
 }

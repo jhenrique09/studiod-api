@@ -12,6 +12,7 @@ import { LocalAuthGuard } from '../auth/local-auth.guard';
 import { AuthService } from '../auth/auth.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UpdatePasswordDto } from './dto/update-password.dto';
+import { RecoverUserPasswordDto } from './dto/recover-user-password.dto';
 
 @Controller('users')
 export class UsersController {
@@ -47,5 +48,10 @@ export class UsersController {
       req.user.email,
       updatePasswordDto,
     );
+  }
+
+  @Post('recoverPassword')
+  async recoverPassword(@Body() recoverPasswordDto: RecoverUserPasswordDto) {
+    return await this.usersService.recoverPassword(recoverPasswordDto);
   }
 }

@@ -20,6 +20,12 @@ export class User {
   @Column({ nullable: false })
   password: string;
 
+  @Column({ nullable: true })
+  one_time_password: string;
+
+  @Column({ nullable: false, default: false })
+  force_password_update: boolean;
+
   @Column({ length: 11, nullable: false, unique: true })
   phone: string;
 

@@ -5,6 +5,9 @@ import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { MailerModule } from '@nestjs-modules/mailer';
+import path from 'path';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 
 @Module({
   imports: [
@@ -21,6 +24,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: false,
       autoLoadEntities: true,
+    }),
+    MailerModule.forRoot({
+      template: {
+        dir: __dirname + '/../mail_templates',
+        adapter: new HandlebarsAdapter(),
+        options: {
+          extName: '.hbs',
+          layoutsDir: __dirname + '/../mail_templates',
+        },
+      },
+      transport: process.env.MAIL_TRANSPORT,
     }),
     UsersModule,
     AuthModule,
