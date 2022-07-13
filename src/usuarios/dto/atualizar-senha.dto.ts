@@ -1,10 +1,16 @@
-import { IsNotEmpty, MinLength } from 'class-validator';
+import { IsNotEmpty, IsString, MinLength } from 'class-validator';
 
 export class AtualizarSenhaDto {
-  @IsNotEmpty()
+  @IsString({
+    message: 'Informe uma senha válida',
+  })
   senhaAtual: string;
 
-  @IsNotEmpty()
-  @MinLength(6)
+  @IsString({
+    message: 'Informe uma nova senha válida',
+  })
+  @MinLength(6, {
+    message: 'A nova senha deve ter no mínimo 6 caracteres',
+  })
   novaSenha: string;
 }
