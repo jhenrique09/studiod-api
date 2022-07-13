@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { EstabelecimentosModule } from './estabelecimentos/estabelecimentos.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
     }),
     UsuariosModule,
     AuthModule,
+    EstabelecimentosModule,
   ],
   controllers: [AppController],
   providers: [AppService],
