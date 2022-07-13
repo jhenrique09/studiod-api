@@ -15,7 +15,6 @@ import { JwtStrategy } from './jwt.strategy';
       inject: [ConfigService],
       useFactory: () => ({
         secret: process.env.JWT_SECRET_TOKEN,
-        signOptions: { expiresIn: process.env.JWT_LIFETIME },
       }),
     }),
   ],
