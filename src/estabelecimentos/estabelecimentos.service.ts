@@ -10,7 +10,7 @@ export class EstabelecimentosService {
     private estabelecimentoRepository: Repository<Estabelecimento>,
   ) {}
 
-  findAll() {
-    return this.estabelecimentoRepository.find();
+  async findAll(): Promise<Estabelecimento[]> {
+    return await this.estabelecimentoRepository.find();
   }
 }

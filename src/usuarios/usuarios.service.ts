@@ -48,8 +48,8 @@ export class UsuariosService {
       where: { email: email },
     });
     if (usuario && !retornarSenha) {
-      usuario.senha = null;
-      usuario.senha_uso_unico = null;
+      usuario.senha = undefined;
+      usuario.senha_uso_unico = undefined;
     }
     return usuario;
   }
