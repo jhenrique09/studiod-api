@@ -38,7 +38,7 @@ import { NaoAutorizadoRetornoDto } from '../common/dto/nao-autorizado-retorno.dt
 @ApiTags('usuarios')
 export class UsuariosController {
   constructor(
-    private readonly usersService: UsuariosService,
+    private readonly usuariosService: UsuariosService,
     private readonly authService: AuthService,
   ) {}
 
@@ -62,7 +62,7 @@ export class UsuariosController {
   async registrar(
     @Body() registrarUsuarioDto: RegistrarUsuarioDto,
   ): Promise<RegistrarUsuarioRetornoDto> {
-    const usuario = await this.usersService.registrar(registrarUsuarioDto);
+    const usuario = await this.usuariosService.registrar(registrarUsuarioDto);
     return {
       statusCode: 200,
       message: 'Usuário registrado com sucesso.',
@@ -115,7 +115,7 @@ export class UsuariosController {
       message: 'Dados do perfil obtidos com sucesso.',
       ...plainToClass(
         PerfilUsuarioRetornoDto,
-        await this.usersService.obterPorEmail(req.user.email, false),
+        await this.usuariosService.obterPorEmail(req.user.email, false),
         { exposeUnsetFields: false },
       ),
     };
@@ -150,7 +150,7 @@ export class UsuariosController {
     return {
       statusCode: 201,
       message: 'Senha atualizada com sucesso.',
-      ...(await this.usersService.atualizarSenha(
+      ...(await this.usuariosService.atualizarSenha(
         req.user.email,
         atualizarSenhaDto,
       )),
@@ -172,7 +172,7 @@ export class UsuariosController {
   async recuperarSenha(
     @Body() recuperarSenhaDto: RecuperarSenhaDto,
   ): Promise<RecuperarSenhaRetornoDto> {
-    await this.usersService.recuperarSenha(recuperarSenhaDto);
+    await this.usuariosService.recuperarSenha(recuperarSenhaDto);
     return {
       statusCode: 201,
       message: 'Senha provisória enviada para o email cadastrado.',

@@ -8,14 +8,17 @@ import { Usuario } from '../usuarios/entities/usuario.entity';
 export class AuthService {
   constructor(
     @Inject(forwardRef(() => UsuariosService))
-    private usersService: UsuariosService,
+    private usuariosService: UsuariosService,
     private jwtService: JwtService,
   ) {}
 
   async validarUsuario(email: string, senha: string): Promise<any> {
-    const usuario: Usuario = await this.usersService.obterPorEmail(email, true);
+    const usuario: Usuario = await this.usuariosService.obterPorEmail(
+      email,
+      true,
+    );
     if (usuario && (await bcrypt.compare(senha, usuario.senha))) {
-      await this.usersService.atualizarRequerAtualizacao(usuario, false);
+      await this.usuariosService.atualizarRequerAtualizacao(usuario, false);
       const { senha, senha_uso_unico, ...result } = usuario;
       return result;
     } else if (
@@ -23,7 +26,7 @@ export class AuthService {
       usuario.senha_uso_unico &&
       (await bcrypt.compare(senha, usuario.senha_uso_unico))
     ) {
-      await this.usersService.atualizarRequerAtualizacao(usuario, true);
+      await this.usuariosService.atualizarRequerAtualizacao(usuario, true);
       const { senha, senha_uso_unico, ...result } = usuario;
       return result;
     }
