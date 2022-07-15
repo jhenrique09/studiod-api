@@ -15,4 +15,9 @@ export class LoginRetornoDto {
     example: 'JWT token',
   })
   access_token: string;
+
+  @ApiProperty({
+    example: 'Indica se o usuário precisa realizar atualização de senha',
+  })
+  requer_atualizacao_senha: boolean;
 }

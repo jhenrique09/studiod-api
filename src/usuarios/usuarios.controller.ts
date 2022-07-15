@@ -33,6 +33,7 @@ import { RecuperarSenhaRetornoDto } from './dto/recuperar-senha-retorno.dto';
 import { ErroInternoRetornoDto } from '../common/dto/erro-interno-retorno.dto';
 import { RequisicaoInvalidaRetornoDto } from '../common/dto/requisicao-invalida-retorno.dto';
 import { NaoAutorizadoRetornoDto } from '../common/dto/nao-autorizado-retorno.dto';
+import { Usuario } from './entities/usuario.entity';
 
 @Controller('usuarios')
 @ApiTags('usuarios')
@@ -89,11 +90,16 @@ export class UsuariosController {
     description: 'Erro interno do servidor',
     type: ErroInternoRetornoDto,
   })
-  login(@Request() req): LoginRetornoDto {
+  async login(@Request() req): Promise<LoginRetornoDto> {
+    const usuario: Usuario = await this.usuariosService.obterPorEmail(
+      req.user.email,
+      false,
+    );
     return {
       statusCode: 200,
       message: 'Usuário autenticado com sucesso.',
       access_token: this.authService.login(req.user).access_token,
+      requer_atualizacao_senha: usuario.requer_atualizacao_senha,
     };
   }
 
@@ -146,7 +152,7 @@ export class UsuariosController {
   async atualizarSenha(
     @Body() atualizarSenhaDto: AtualizarSenhaDto,
     @Request() req,
-  ): Promise<LoginRetornoDto> {
+  ): Promise<AtualizarSenhaRetornoDto> {
     return {
       statusCode: 201,
       message: 'Senha atualizada com sucesso.',
