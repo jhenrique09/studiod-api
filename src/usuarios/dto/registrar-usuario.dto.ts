@@ -10,9 +10,12 @@ export class RegistrarUsuarioDto {
   })
   nome: string;
 
-  @IsEmail({
-    message: 'Informe um email válido',
-  })
+  @IsEmail(
+    {},
+    {
+      message: 'Informe um email válido',
+    },
+  )
   @ApiProperty({
     example: 'joao@gmail.com',
   })
