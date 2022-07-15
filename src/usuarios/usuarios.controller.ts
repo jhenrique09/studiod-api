@@ -5,6 +5,7 @@ import {
   Post,
   Request,
   UseGuards,
+  Version,
 } from '@nestjs/common';
 import { UsuariosService } from './usuarios.service';
 import { RegistrarUsuarioDto } from './dto/registrar-usuario.dto';
@@ -20,6 +21,7 @@ import {
   ApiInternalServerErrorResponse,
   ApiResponse,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { LoginDto } from './dto/login.dto';
 import { RegistrarUsuarioRetornoDto } from './dto/registrar-usuario-retorno.dto';
@@ -40,6 +42,7 @@ export class UsuariosController {
     private readonly authService: AuthService,
   ) {}
 
+  @Version('1')
   @Post('registrar')
   @ApiResponse({
     status: 201,
@@ -67,6 +70,7 @@ export class UsuariosController {
     };
   }
 
+  @Version('1')
   @UseGuards(LocalAuthGuard)
   @Post('autenticar')
   @ApiBody({ type: LoginDto })
@@ -75,7 +79,7 @@ export class UsuariosController {
     description: 'Usuário autenticado com sucesso',
     type: LoginRetornoDto,
   })
-  @ApiResponse({
+  @ApiUnauthorizedResponse({
     status: 401,
     description: 'Não autorizado',
     type: NaoAutorizadoRetornoDto,
@@ -93,9 +97,10 @@ export class UsuariosController {
     };
   }
 
+  @Version('1')
   @UseGuards(JwtAuthGuard)
   @Get('perfil')
-  @ApiResponse({
+  @ApiUnauthorizedResponse({
     status: 401,
     description: 'Não autorizado',
     type: NaoAutorizadoRetornoDto,
@@ -116,12 +121,18 @@ export class UsuariosController {
     };
   }
 
+  @Version('1')
   @UseGuards(JwtAuthGuard)
   @Post('atualizarSenha')
   @ApiResponse({
     status: 201,
     description: 'Senha atualizada com sucesso.',
     type: AtualizarSenhaRetornoDto,
+  })
+  @ApiUnauthorizedResponse({
+    status: 401,
+    description: 'Não autorizado',
+    type: NaoAutorizadoRetornoDto,
   })
   @ApiInternalServerErrorResponse({
     status: 500,
@@ -146,6 +157,7 @@ export class UsuariosController {
     };
   }
 
+  @Version('1')
   @Post('recuperarSenha')
   @ApiResponse({
     status: 201,

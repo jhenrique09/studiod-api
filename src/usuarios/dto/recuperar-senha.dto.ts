@@ -5,6 +5,8 @@ export class RecuperarSenhaDto {
   @IsEmail({
     message: 'Informe um email válido',
   })
-  @ApiProperty()
+  @ApiProperty({
+    example: 'joao@gmail.com',
+  })
   email: string;
 }

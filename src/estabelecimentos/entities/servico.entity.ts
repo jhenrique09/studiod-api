@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Estabelecimento } from './estabelecimento.entity';
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 

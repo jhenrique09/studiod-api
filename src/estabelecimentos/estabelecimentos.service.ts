@@ -10,7 +10,15 @@ export class EstabelecimentosService {
     private estabelecimentoRepository: Repository<Estabelecimento>,
   ) {}
 
-  async findAll(): Promise<Estabelecimento[]> {
+  async obterTodos(): Promise<Estabelecimento[]> {
     return await this.estabelecimentoRepository.find();
+  }
+
+  async obterPorId(id: number): Promise<Estabelecimento> {
+    return await this.estabelecimentoRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
   }
 }

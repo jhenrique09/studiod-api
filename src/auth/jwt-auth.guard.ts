@@ -8,7 +8,7 @@ import { UsuariosService } from '../usuarios/usuarios.service';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
-  constructor(private readonly usersService: UsuariosService) {
+  constructor(private readonly usuariosService: UsuariosService) {
     super();
   }
 
@@ -22,7 +22,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     if (err || !user) {
       throw err || new UnauthorizedException();
     }
-    await this.usersService.validarUsuario(
+    await this.usuariosService.validarUsuario(
       user.email,
       user.data_atualizacao,
       false,
