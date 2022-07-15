@@ -23,6 +23,7 @@ import { DataHorariosDto } from './dto/data-horarios.dto';
 import { ErroInternoRetornoDto } from '../common/dto/erro-interno-retorno.dto';
 import { Agendamento } from './entities/agendamento.entity';
 import { CriarAgendamentoRetornoDto } from './dto/criar-agendamento-retorno.dto';
+import { JwtAuthVerificarAtualizacaoSenhaGuard } from '../auth/jwt-auth-verificar-atualizacao-senha-guard.service';
 
 @Controller('agendamentos')
 @ApiTags('agendamentos')
@@ -31,7 +32,7 @@ export class AgendamentosController {
 
   @Version('1')
   @Post()
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthVerificarAtualizacaoSenhaGuard)
   @ApiResponse({
     status: 201,
     description: 'Agendamento criado com sucesso.',
