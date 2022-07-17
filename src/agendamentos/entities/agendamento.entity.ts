@@ -26,7 +26,6 @@ export class Agendamento {
     eager: false,
   })
   @JoinColumn()
-  @ApiHideProperty()
   estabelecimento: Estabelecimento;
 
   @Column({ nullable: false, length: 10 })
@@ -59,5 +58,6 @@ export class Agendamento {
   servicos: number[];
 
   @UpdateDateColumn()
+  @Column({ select: false })
   data_atualizacao: Date;
 }

@@ -8,6 +8,10 @@ import { EstabelecimentosService } from '../estabelecimentos/estabelecimentos.se
 import { Estabelecimento } from '../estabelecimentos/entities/estabelecimento.entity';
 import * as moment from 'moment';
 import { DataHorariosDto } from './dto/data-horarios.dto';
+import {
+  AgendamentosEstabelecimentoRetornoDto,
+  AgendamentosRetornoDto,
+} from './dto/agendamentos-retorno.dto';
 
 @Injectable()
 export class AgendamentosService {
@@ -162,14 +166,46 @@ export class AgendamentosService {
     return datas;
   }
 
-  async obterAgendamentosPorUsuario(email: string): Promise<Agendamento[]> {
-    return await this.agendamentoRepository.find({
-      where: {
-        usuario: {
-          email: email,
+  async obterAgendamentosPorUsuario(
+    email: string,
+  ): Promise<AgendamentosRetornoDto[]> {
+    const agendamentos: AgendamentosRetornoDto[] = [];
+    (
+      await this.agendamentoRepository.find({
+        select: {
+          estabelecimento: {
+            id: true,
+            nome: true,
+          },
         },
-      },
+        where: {
+          usuario: {
+            email: email,
+          },
+        },
+        relations: ['estabelecimento', 'estabelecimento.servicos'],
+      })
+    ).forEach((agendamento) => {
+      const agendamento_ = new AgendamentosRetornoDto();
+      agendamento_.id = agendamento.id;
+      agendamento_.data = agendamento.data;
+      agendamento_.hora = agendamento.hora;
+      agendamento_.status = agendamento.status;
+      agendamento_.estabelecimento = new AgendamentosEstabelecimentoRetornoDto(
+        agendamento.estabelecimento.id,
+        agendamento.estabelecimento.nome,
+      );
+      agendamento_.servicos = [];
+      agendamento.servicos.forEach((servico) => {
+        agendamento_.servicos.push(
+          agendamento.estabelecimento.servicos.filter(
+            (s) => s.id == servico,
+          )[0],
+        );
+      });
+      agendamentos.push(agendamento_);
     });
+    return agendamentos;
   }
 
   validarData(data) {

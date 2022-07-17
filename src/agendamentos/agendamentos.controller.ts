@@ -21,9 +21,9 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { NaoAutorizadoRetornoDto } from '../common/dto/nao-autorizado-retorno.dto';
 import { DataHorariosDto } from './dto/data-horarios.dto';
 import { ErroInternoRetornoDto } from '../common/dto/erro-interno-retorno.dto';
-import { Agendamento } from './entities/agendamento.entity';
 import { CriarAgendamentoRetornoDto } from './dto/criar-agendamento-retorno.dto';
 import { JwtAuthVerificarAtualizacaoSenhaGuard } from '../auth/jwt-auth-verificar-atualizacao-senha-guard.service';
+import { AgendamentosRetornoDto } from './dto/agendamentos-retorno.dto';
 
 @Controller('agendamentos')
 @ApiTags('agendamentos')
@@ -75,7 +75,7 @@ export class AgendamentosController {
     name: 'Authorization',
     description: 'Token JWT',
   })
-  async obterAgendamentos(@Request() req): Promise<Agendamento[]> {
+  async obterAgendamentos(@Request() req): Promise<AgendamentosRetornoDto[]> {
     return await this.agendamentosService.obterAgendamentosPorUsuario(
       req.user.email,
     );

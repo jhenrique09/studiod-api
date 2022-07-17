@@ -11,7 +11,9 @@ export class EstabelecimentosService {
   ) {}
 
   async obterTodos(): Promise<Estabelecimento[]> {
-    return await this.estabelecimentoRepository.find();
+    return await this.estabelecimentoRepository.find({
+      relations: ['servicos'],
+    });
   }
 
   async obterPorId(id: number): Promise<Estabelecimento> {
@@ -19,6 +21,7 @@ export class EstabelecimentosService {
       where: {
         id: id,
       },
+      relations: ['servicos'],
     });
   }
 }
