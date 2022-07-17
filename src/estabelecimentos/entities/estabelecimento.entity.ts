@@ -56,9 +56,9 @@ export class Estabelecimento {
   })
   uf: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   @ApiProperty({
-    example: 'Frente a padaria',
+    example: 'Ponto de referencia',
   })
   referencia: string;
 
