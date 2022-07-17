@@ -62,6 +62,9 @@ export class Estabelecimento {
   })
   referencia: string;
 
+  @Column({ nullable: true })
+  url_imagem: string;
+
   @CreateDateColumn()
   data_criacao: Date;
 
