@@ -58,6 +58,6 @@ export class Agendamento {
   servicos: number[];
 
   @UpdateDateColumn()
-  @Column({ select: false })
+  @Column({ select: false, nullable: false, default: () => 'now()' })
   data_atualizacao: Date;
 }
