@@ -97,7 +97,7 @@ export class AgendamentosService {
     estabelecimento: Estabelecimento,
   ): Promise<DataHorariosDto[]> {
     const hoje: string = moment(new Date()).format('DD/MM/YYYY');
-    const datas: string[] = this.obterProximasDatas(1);
+    const datas: string[] = this.obterProximasDatas(7);
     let dataHorarios: DataHorariosDto[] = [];
     const horaAbertura = 8;
     const horaFechamento = 18;
